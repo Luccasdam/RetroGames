@@ -7,6 +7,7 @@
 APongBall::APongBall()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = false;
 
 	BallMesh = CreateDefaultSubobject<UStaticMeshComponent>("BallMesh");
 	SetRootComponent(BallMesh);

@@ -11,6 +11,7 @@
 UENUM()
 enum class EMatchState : uint8
 {
+	Waiting,
 	Playing,
 	GameOver
 };
@@ -41,7 +42,7 @@ public:
 	FOnPlayerScoreChanged OnPlayerScoreChanged;
 
 private:
-	EMatchState MatchState;
+	EMatchState MatchState = EMatchState::Waiting;
 	
 	int32 P1Score;
 	int32 P2Score;

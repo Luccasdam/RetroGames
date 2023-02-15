@@ -10,9 +10,16 @@ void APongGameMode::StartMatch()
 	APongGameState* PongGS = GetGameState<APongGameState>();
 	if (IsValid(PongGS))
 	{
-		if (PongGS->GetMatchState() == EMatchState::GameOver)
+		switch (PongGS->GetMatchState())
 		{
+		case EMatchState::Waiting:
 			PongGS->SetMatchState(EMatchState::Playing);
+			break;
+		case EMatchState::Playing:
+			break;
+		case EMatchState::GameOver:
+			PongGS->SetMatchState(EMatchState::Waiting);
+			break;
 		}
 	}
 }
@@ -22,9 +29,9 @@ void APongGameMode::RegisterScore(const int32 PlayerIndex)
 	APongGameState* PongGS = GetGameState<APongGameState>();
 	if (IsValid(PongGS))
 	{
-		if (PongGS->AddPlayerScore(PlayerIndex) == WinningScore)
-		{
-			PongGS->SetMatchState(EMatchState::GameOver);
-		}
+		const int32 NewPlayerScore = PongGS->AddPlayerScore(PlayerIndex);
+		const EMatchState NextMatchState = NewPlayerScore == WinningScore ? EMatchState::GameOver : EMatchState::Waiting;
+		
+		PongGS->SetMatchState(NextMatchState);
 	}
 }
