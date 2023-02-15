@@ -32,6 +32,9 @@ public:
 	/* Return the New Player Score Value */
 	int32 AddPlayerScore(const int32 PlayerIndex);
 
+	UFUNCTION(BlueprintCallable)
+	int32 GetWinningPlayer() const {return WinningPlayer;}
+
 protected:
 	void ResetScores();
 
@@ -46,4 +49,5 @@ private:
 	
 	int32 P1Score;
 	int32 P2Score;
+	int32 WinningPlayer;
 };

@@ -18,6 +18,9 @@ int32 APongGameState::AddPlayerScore(const int32 PlayerIndex)
 {
 	const int32 NewScore = PlayerIndex == 0 ? ++P1Score : ++P2Score;
 	OnPlayerScoreChanged.Broadcast(PlayerIndex, NewScore);
+
+	WinningPlayer = P1Score > P2Score ? 0 : 1;
+	
 	return NewScore;
 }
 
