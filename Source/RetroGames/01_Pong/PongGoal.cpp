@@ -2,26 +2,30 @@
 
 
 #include "PongGoal.h"
+#include "PongBall.h"
+#include "Components/BoxComponent.h"
 
-// Sets default values
+
 APongGoal::APongGoal()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	GoalBox = CreateDefaultSubobject<UBoxComponent>("GoalBox");
+	SetRootComponent(GoalBox);
 }
 
-// Called when the game starts or when spawned
-void APongGoal::BeginPlay()
+void APongGoal::PostInitializeComponents()
 {
-	Super::BeginPlay();
-	
+	Super::PostInitializeComponents();
+
+	GoalBox->OnComponentBeginOverlap.AddDynamic(this, &APongGoal::OnGoalOverlap);
 }
 
-// Called every frame
-void APongGoal::Tick(float DeltaTime)
+void APongGoal::OnGoalOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	Super::Tick(DeltaTime);
-
+	APongBall* PongBall = Cast<APongBall>(OtherActor);
+	if (IsValid(PongBall))
+	{
+		PongBall->ResetBall();
+	}
 }
-

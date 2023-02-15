@@ -41,3 +41,9 @@ void APongBall::Tick(float DeltaTime)
 	}
 }
 
+void APongBall::ResetBall()
+{
+	SetActorLocation(FVector::ZeroVector);
+	XMovementSpeed = -XMovementSpeed;
+}
+

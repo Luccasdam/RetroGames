@@ -20,6 +20,8 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+	void ResetBall();
+
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category="Components")

@@ -6,21 +6,23 @@
 #include "GameFramework/Actor.h"
 #include "PongGoal.generated.h"
 
+class UBoxComponent;
+
 UCLASS()
 class RETROGAMES_API APongGoal : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	APongGoal();
+	virtual void PostInitializeComponents() override;
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	UFUNCTION()
+	void OnGoalOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
+protected:
+	UPROPERTY(VisibleAnywhere, Category="Components")
+	TObjectPtr<UBoxComponent> GoalBox;
 };
