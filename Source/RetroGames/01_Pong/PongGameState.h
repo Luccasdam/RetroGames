@@ -20,9 +20,9 @@ UCLASS()
 class RETROGAMES_API APongGameState : public AGameStateBase
 {
 	GENERATED_BODY()
-
-	DECLARE_MULTICAST_DELEGATE_OneParam (FOnMatchStateChanged, EMatchState);
-	DECLARE_MULTICAST_DELEGATE_TwoParams (FOnPlayerScoreChanged, int32, int32); // PlayerIndex, PlayerScore
+	
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam (FOnMatchStateChanged, const EMatchState, NewMatchState);
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnPlayerScoreChanged, const int32, const int32); // PlayerIndex, PlayerScore
 	
 public:
 	void SetMatchState(const EMatchState NewMatchState);
@@ -36,6 +36,7 @@ protected:
 
 	
 public:
+	UPROPERTY(BlueprintAssignable)
 	FOnMatchStateChanged OnMatchStateChanged;
 	FOnPlayerScoreChanged OnPlayerScoreChanged;
 

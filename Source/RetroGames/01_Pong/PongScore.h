@@ -21,6 +21,8 @@ protected:
 	virtual void BeginPlay() override;
 	
 	void OnPlayerScored(const int32 ScoringPlayer, const int32 PlayerScore);
+
+	UFUNCTION()
 	void OnMatchStateChanged(EMatchState NewMatchState);
 
 	

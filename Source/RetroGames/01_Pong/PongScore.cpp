@@ -26,7 +26,7 @@ void APongScore::BeginPlay()
 		if (IsValid(PongGS))
 		{
 			PongGS->OnPlayerScoreChanged.AddUObject(this, &APongScore::OnPlayerScored);
-			PongGS->OnMatchStateChanged.AddUObject(this, &APongScore::OnMatchStateChanged);
+			PongGS->OnMatchStateChanged.AddDynamic(this, &APongScore::OnMatchStateChanged);
 		}
 	}
 

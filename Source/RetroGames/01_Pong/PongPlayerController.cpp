@@ -5,22 +5,11 @@
 #include "PongPaddle.h"
 #include "EngineUtils.h"
 #include "PongGameMode.h"
-#include "PongGameState.h"
 
 
 void APongPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-
-	const UWorld* World = GetWorld();
-	if (IsValid(World))
-	{
-		APongGameState* PongGS = World->GetGameState<APongGameState>();
-		if (IsValid(PongGS))
-		{
-			PongGS->OnMatchStateChanged.AddUObject(this, &APongPlayerController::OnMatchStateChanged);
-		}
-	}
 	
 	for (TActorIterator<APongPaddle> ActorIterator(GetWorld()); ActorIterator; ++ActorIterator)
 	{
@@ -38,11 +27,6 @@ void APongPlayerController::BeginPlay()
 			}
 		}
 	}
-}
-
-void APongPlayerController::OnMatchStateChanged(const EMatchState NewMatchState)
-{
-	SetShowGameOverScreen(NewMatchState == EMatchState::GameOver);
 }
 
 

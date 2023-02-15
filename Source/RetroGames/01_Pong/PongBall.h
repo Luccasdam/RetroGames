@@ -18,6 +18,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
 	void OnMatchStateChanged(const EMatchState NewMatchState);
 
 public:	

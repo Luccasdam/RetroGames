@@ -22,7 +22,7 @@ void APongBall::BeginPlay()
 		APongGameState* PongGS = World->GetGameState<APongGameState>();
 		if (IsValid(PongGS))
 		{
-			PongGS->OnMatchStateChanged.AddUObject(this, &APongBall::OnMatchStateChanged);
+			PongGS->OnMatchStateChanged.AddDynamic(this, &APongBall::OnMatchStateChanged);
 		}
 	}
 }

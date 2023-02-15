@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PongGameState.h"
 #include "GameFramework/PlayerController.h"
 #include "PongPlayerController.generated.h"
 
@@ -17,11 +16,6 @@ class RETROGAMES_API APongPlayerController : public APlayerController
 
 protected:
 	virtual void BeginPlay() override;
-	
-	void OnMatchStateChanged(const EMatchState NewMatchState);
-	
-	UFUNCTION(BlueprintImplementableEvent)
-	void SetShowGameOverScreen(const bool NewVisibility);
 	
 	virtual void SetupInputComponent() override;
 	
