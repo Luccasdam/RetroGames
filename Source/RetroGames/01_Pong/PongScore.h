@@ -6,21 +6,25 @@
 #include "GameFramework/Actor.h"
 #include "PongScore.generated.h"
 
+class UTextRenderComponent;
+
 UCLASS()
 class RETROGAMES_API APongScore : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	APongScore();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+	void OnPlayerScored(const int32 ScoringPlayer, const int32 PlayerScore);
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+	
+	UPROPERTY(VisibleAnywhere, Category="Components")
+	TObjectPtr<UTextRenderComponent> ScoreText;
+	
+	UPROPERTY(EditInstanceOnly, Category="Gameplay")
+	int32 PlayerIndex = -1;
 };

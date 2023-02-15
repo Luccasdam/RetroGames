@@ -2,26 +2,41 @@
 
 
 #include "PongScore.h"
+#include "PongGameState.h"
+#include "Components/TextRenderComponent.h"
 
-// Sets default values
+
 APongScore::APongScore()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
+	ScoreText = CreateDefaultSubobject<UTextRenderComponent>("ScoreText");
+	SetRootComponent(ScoreText);
 }
 
-// Called when the game starts or when spawned
+
 void APongScore::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	const UWorld* World = GetWorld();
+	if (IsValid(World))
+	{
+		APongGameState* PongGS = World->GetGameState<APongGameState>();
+		if (IsValid(PongGS))
+		{
+			PongGS->OnPlayerScoreChanged.AddUObject(this, &APongScore::OnPlayerScored);
+		}
+	}
+
+	ScoreText->SetText(FText::AsNumber(0));
 }
 
-// Called every frame
-void APongScore::Tick(float DeltaTime)
+void APongScore::OnPlayerScored(const int32 ScoringPlayer, const int32 PlayerScore)
 {
-	Super::Tick(DeltaTime);
-
+	if (ScoringPlayer == PlayerIndex)
+	{
+		ScoreText->SetText(FText::AsNumber(PlayerScore));
+	}
 }
 

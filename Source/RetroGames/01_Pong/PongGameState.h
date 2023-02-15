@@ -12,9 +12,15 @@ class RETROGAMES_API APongGameState : public AGameStateBase
 {
 	GENERATED_BODY()
 
+	DECLARE_MULTICAST_DELEGATE_TwoParams (FOnPlayerScoreChanged, int32, int32); // PlayerIndex, PlayerScore
+	
 public:
 	/* Return the New Player Score Value */
 	int32 AddPlayerScore(const int32 PlayerIndex);
+
+	
+public:
+	FOnPlayerScoreChanged OnPlayerScoreChanged;
 
 private:
 	int32 P1Score;
