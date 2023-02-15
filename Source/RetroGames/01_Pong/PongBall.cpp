@@ -3,6 +3,8 @@
 
 #include "PongBall.h"
 
+#include "PongPaddle.h"
+
 
 APongBall::APongBall()
 {
@@ -22,7 +24,20 @@ void APongBall::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	const FVector DeltaLocation = FVector(0.0f, XMovementSpeed, YMovementSpeed) * DeltaTime;
-	
-	AddActorWorldOffset(DeltaLocation);
+
+	FHitResult HitResult;
+	AddActorWorldOffset(DeltaLocation, true, &HitResult);
+
+	if (HitResult.bBlockingHit)
+	{		
+		if (HitResult.GetActor()->ActorHasTag(FName("Player")))
+		{
+			XMovementSpeed = -XMovementSpeed;
+		}
+		else
+		{
+			YMovementSpeed = -YMovementSpeed;
+		}
+	}
 }
 
