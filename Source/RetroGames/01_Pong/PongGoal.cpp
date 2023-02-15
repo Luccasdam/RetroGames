@@ -3,6 +3,7 @@
 
 #include "PongGoal.h"
 #include "PongBall.h"
+#include "PongGameMode.h"
 #include "Components/BoxComponent.h"
 
 
@@ -27,5 +28,15 @@ void APongGoal::OnGoalOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 	if (IsValid(PongBall))
 	{
 		PongBall->ResetBall();
+
+		const UWorld* World = GetWorld();
+		if (IsValid(World))
+		{
+			APongGameMode* PongGM = World->GetAuthGameMode<APongGameMode>();
+			if (IsValid(PongGM))
+			{
+				PongGM->RegisterScore(ScoringPlayer);
+			}
+		}
 	}
 }

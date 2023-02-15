@@ -25,4 +25,7 @@ protected:
 protected:
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	TObjectPtr<UBoxComponent> GoalBox;
+
+	UPROPERTY(EditInstanceOnly, Category="Gameplay")
+	int32 ScoringPlayer = -1;
 };
