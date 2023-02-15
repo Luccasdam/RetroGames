@@ -26,6 +26,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	TObjectPtr<UBoxComponent> GoalBox;
 
+	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
+	TObjectPtr<USoundBase> GoalSFX;
+
 	UPROPERTY(EditInstanceOnly, Category="Gameplay")
 	int32 ScoringPlayer = -1;
 };

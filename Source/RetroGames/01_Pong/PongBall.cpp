@@ -3,6 +3,8 @@
 
 #include "PongBall.h"
 
+#include "Kismet/GameplayStatics.h"
+
 
 APongBall::APongBall()
 {
@@ -43,7 +45,12 @@ void APongBall::Tick(float DeltaTime)
 	AddActorWorldOffset(DeltaLocation, true, &HitResult);
 
 	if (HitResult.bBlockingHit)
-	{		
+	{
+		if (IsValid(BallHitSFX))
+		{
+			UGameplayStatics::PlaySound2D(this, BallHitSFX);
+		}
+		
 		if (HitResult.GetActor()->ActorHasTag(FName("Player")))
 		{
 			XMovementSpeed = -XMovementSpeed;

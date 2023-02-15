@@ -31,6 +31,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	TObjectPtr<UStaticMeshComponent> BallMesh;
 
+	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
+	TObjectPtr<USoundBase> BallHitSFX;
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
 	float XMovementSpeed = 300.0f;

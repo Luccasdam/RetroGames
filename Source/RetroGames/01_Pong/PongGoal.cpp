@@ -5,6 +5,7 @@
 #include "PongBall.h"
 #include "PongGameMode.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 APongGoal::APongGoal()
@@ -27,6 +28,11 @@ void APongGoal::OnGoalOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 	APongBall* PongBall = Cast<APongBall>(OtherActor);
 	if (IsValid(PongBall))
 	{
+		if (IsValid(GoalSFX))
+		{
+			UGameplayStatics::PlaySound2D(this, GoalSFX);
+		}
+		
 		PongBall->ResetBall();
 
 		const UWorld* World = GetWorld();
