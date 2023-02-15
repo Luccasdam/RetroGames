@@ -12,15 +12,23 @@ class RETROGAMES_API APongBall : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	APongBall();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+
+protected:
+	UPROPERTY(VisibleAnywhere, Category="Components")
+	TObjectPtr<UStaticMeshComponent> BallMesh;
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
+	float XMovementSpeed = 300.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
+	float YMovementSpeed = 200.0f;
 };

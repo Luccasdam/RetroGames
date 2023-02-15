@@ -3,25 +3,26 @@
 
 #include "PongBall.h"
 
-// Sets default values
+
 APongBall::APongBall()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	BallMesh = CreateDefaultSubobject<UStaticMeshComponent>("BallMesh");
+	SetRootComponent(BallMesh);
 }
 
-// Called when the game starts or when spawned
 void APongBall::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
-// Called every frame
 void APongBall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	const FVector DeltaLocation = FVector(0.0f, XMovementSpeed, YMovementSpeed) * DeltaTime;
+	
+	AddActorWorldOffset(DeltaLocation);
 }
 
