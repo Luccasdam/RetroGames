@@ -21,6 +21,7 @@ public:
 	void SetMovementInput(const float Value) {MovementInput = Value;}
 		
 	int32 GetPlayerIndex() const {return PlayerIndex;}
+	float GetPaddleHalfSize() const;
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category="Components")

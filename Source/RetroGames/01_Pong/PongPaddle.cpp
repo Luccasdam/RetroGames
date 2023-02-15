@@ -3,6 +3,8 @@
 
 #include "PongPaddle.h"
 
+#define METERS_TO_CENTIMETERS 100.0f
+
 
 APongPaddle::APongPaddle()
 {
@@ -20,4 +22,9 @@ void APongPaddle::Tick(float DeltaTime)
 	const float DeltaMovement = MovementInput * MovementSpeed * DeltaTime;
 	const FVector DeltaLocation = FVector::UpVector * DeltaMovement;
 	AddActorWorldOffset(DeltaLocation, true);
+}
+
+float APongPaddle::GetPaddleHalfSize() const
+{
+	return PaddleMesh->GetComponentScale().Z * METERS_TO_CENTIMETERS * 0.5f;
 }

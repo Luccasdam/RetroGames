@@ -26,6 +26,7 @@ public:
 
 	void ResetBall();
 
+	float GetXSpeedMultiplier() const {return XSpeedMultiplier;}
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category="Components")
@@ -33,11 +34,17 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
 	TObjectPtr<USoundBase> BallHitSFX;
-
-private:
+	
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
 	float XMovementSpeed = 300.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
 	float YMovementSpeed = 200.0f;
+
+	UPROPERTY(EditAnywhere, Category="Gameplay")
+	float XSpeedModifierPerHit = 0.05f;
+
+private:
+	float XSpeedMultiplier = 1.0f;
+	float YSpeedMultiplier = 0.0f;
 };

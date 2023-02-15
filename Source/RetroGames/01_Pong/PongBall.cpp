@@ -2,7 +2,7 @@
 
 
 #include "PongBall.h"
-
+#include "PongPaddle.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -33,13 +33,18 @@ void APongBall::BeginPlay()
 void APongBall::OnMatchStateChanged(const EMatchState NewMatchState)
 {
 	SetActorTickEnabled(NewMatchState == EMatchState::Playing);
+
+	if (NewMatchState == EMatchState::Playing)
+	{
+		YSpeedMultiplier = FMath::RandRange(-1.0f, 1.0f);
+	}
 }
 
 void APongBall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	const FVector DeltaLocation = FVector(0.0f, XMovementSpeed, YMovementSpeed) * DeltaTime;
+	const FVector DeltaLocation = FVector(0.0f, XMovementSpeed * XSpeedMultiplier, YMovementSpeed * YSpeedMultiplier) * DeltaTime;
 
 	FHitResult HitResult;
 	AddActorWorldOffset(DeltaLocation, true, &HitResult);
@@ -51,13 +56,18 @@ void APongBall::Tick(float DeltaTime)
 			UGameplayStatics::PlaySound2D(this, BallHitSFX);
 		}
 		
-		if (HitResult.GetActor()->ActorHasTag(FName("Player")))
+		const APongPaddle* PongPaddle = Cast<APongPaddle>(HitResult.GetActor());
+		if (IsValid(PongPaddle))
 		{
 			XMovementSpeed = -XMovementSpeed;
+			XSpeedMultiplier += XSpeedModifierPerHit;
+
+			const float HitDistance = GetActorLocation().Z - PongPaddle->GetActorLocation().Z;
+			YSpeedMultiplier = HitDistance / PongPaddle->GetPaddleHalfSize();
 		}
 		else
 		{
-			YMovementSpeed = -YMovementSpeed;
+			YSpeedMultiplier = -YSpeedMultiplier;
 		}
 	}
 }
@@ -66,5 +76,6 @@ void APongBall::ResetBall()
 {
 	SetActorLocation(FVector::ZeroVector);
 	XMovementSpeed = -XMovementSpeed;
+	XSpeedMultiplier = Cast<APongBall>(APongBall::StaticClass()->GetDefaultObject(true))->GetXSpeedMultiplier();
 }
 
