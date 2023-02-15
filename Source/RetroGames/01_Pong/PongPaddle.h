@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "PongPaddle.generated.h"
 
+
 UCLASS()
 class RETROGAMES_API APongPaddle : public APawn
 {
@@ -13,13 +14,13 @@ class RETROGAMES_API APongPaddle : public APawn
 
 public:
 	APongPaddle();
-
+	
 	virtual void Tick(float DeltaTime) override;
 	
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-private:
-	void SetMovementInput(float Value) {MovementInput = Value;}
+public:
+	void SetMovementInput(const float Value) {MovementInput = Value;}
+		
+	int32 GetPlayerIndex() const {return PlayerIndex;}
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category="Components")
@@ -29,5 +30,8 @@ protected:
 	float MovementSpeed = 250.0f;
 
 private:
+	UPROPERTY(EditInstanceOnly, Category="Gameplay")
+	int32 PlayerIndex;
+	
 	float MovementInput;
 };
