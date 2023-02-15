@@ -6,29 +6,28 @@
 // Sets default values
 APongPaddle::APongPaddle()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	PaddleMesh = CreateDefaultSubobject<UStaticMeshComponent>("PaddleMesh");
+	SetRootComponent(PaddleMesh);
 }
 
-// Called when the game starts or when spawned
-void APongPaddle::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
 
-// Called every frame
+
 void APongPaddle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	const float DeltaMovement = MovementInput * MovementSpeed * DeltaTime;
+	const FVector DeltaLocation = FVector::UpVector * DeltaMovement;
+	AddActorWorldOffset(DeltaLocation, true);
 }
 
-// Called to bind functionality to input
 void APongPaddle::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	check(PlayerInputComponent)
 
+	PlayerInputComponent->BindAxis("P1MoveUp", this, &APongPaddle::SetMovementInput);
 }
 
