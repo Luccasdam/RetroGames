@@ -13,6 +13,7 @@ class RETROGAMES_API APongGameMode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	void StartMatch();
 	void RegisterScore(const int32 PlayerIndex);
 
 protected:

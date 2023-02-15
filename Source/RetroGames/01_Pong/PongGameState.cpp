@@ -3,9 +3,28 @@
 
 #include "PongGameState.h"
 
+void APongGameState::SetMatchState(const EMatchState NewMatchState)
+{
+	MatchState = NewMatchState;
+	OnMatchStateChanged.Broadcast(MatchState);
+
+	if (MatchState == EMatchState::GameOver)
+	{
+		ResetScores();
+	}
+}
+
 int32 APongGameState::AddPlayerScore(const int32 PlayerIndex)
 {
 	const int32 NewScore = PlayerIndex == 0 ? ++P1Score : ++P2Score;
 	OnPlayerScoreChanged.Broadcast(PlayerIndex, NewScore);
 	return NewScore;
+}
+
+void APongGameState::ResetScores()
+{
+	P1Score = 0;
+	P2Score = 0;
+	OnPlayerScoreChanged.Broadcast(0, P1Score);
+	OnPlayerScoreChanged.Broadcast(1, P2Score);
 }

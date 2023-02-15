@@ -5,6 +5,18 @@
 #include "PongGameState.h"
 
 
+void APongGameMode::StartMatch()
+{
+	APongGameState* PongGS = GetGameState<APongGameState>();
+	if (IsValid(PongGS))
+	{
+		if (PongGS->GetMatchState() == EMatchState::GameOver)
+		{
+			PongGS->SetMatchState(EMatchState::Playing);
+		}
+	}
+}
+
 void APongGameMode::RegisterScore(const int32 PlayerIndex)
 {
 	APongGameState* PongGS = GetGameState<APongGameState>();
@@ -12,7 +24,7 @@ void APongGameMode::RegisterScore(const int32 PlayerIndex)
 	{
 		if (PongGS->AddPlayerScore(PlayerIndex) == WinningScore)
 		{
-			GEngine->AddOnScreenDebugMessage(01, 5, FColor::White, FString::Printf(TEXT("Player %i is the Winner!"), PlayerIndex));
+			PongGS->SetMatchState(EMatchState::GameOver);
 		}
 	}
 }

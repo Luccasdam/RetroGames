@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PongGameState.h"
 #include "GameFramework/Actor.h"
 #include "PongScore.generated.h"
 
@@ -20,6 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 	
 	void OnPlayerScored(const int32 ScoringPlayer, const int32 PlayerScore);
+	void OnMatchStateChanged(EMatchState NewMatchState);
 
 	
 	UPROPERTY(VisibleAnywhere, Category="Components")

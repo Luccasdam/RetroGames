@@ -3,8 +3,6 @@
 
 #include "PongBall.h"
 
-#include "PongPaddle.h"
-
 
 APongBall::APongBall()
 {
@@ -17,6 +15,21 @@ APongBall::APongBall()
 void APongBall::BeginPlay()
 {
 	Super::BeginPlay();
+
+	const UWorld* World = GetWorld();
+	if (IsValid(World))
+	{
+		APongGameState* PongGS = World->GetGameState<APongGameState>();
+		if (IsValid(PongGS))
+		{
+			PongGS->OnMatchStateChanged.AddUObject(this, &APongBall::OnMatchStateChanged);
+		}
+	}
+}
+
+void APongBall::OnMatchStateChanged(const EMatchState NewMatchState)
+{
+	SetActorTickEnabled(NewMatchState == EMatchState::Playing);
 }
 
 void APongBall::Tick(float DeltaTime)

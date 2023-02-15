@@ -4,11 +4,23 @@
 #include "PongPlayerController.h"
 #include "PongPaddle.h"
 #include "EngineUtils.h"
+#include "PongGameMode.h"
+#include "PongGameState.h"
 
 
 void APongPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	const UWorld* World = GetWorld();
+	if (IsValid(World))
+	{
+		APongGameState* PongGS = World->GetGameState<APongGameState>();
+		if (IsValid(PongGS))
+		{
+			PongGS->OnMatchStateChanged.AddUObject(this, &APongPlayerController::OnMatchStateChanged);
+		}
+	}
 	
 	for (TActorIterator<APongPaddle> ActorIterator(GetWorld()); ActorIterator; ++ActorIterator)
 	{
@@ -28,12 +40,20 @@ void APongPlayerController::BeginPlay()
 	}
 }
 
+void APongPlayerController::OnMatchStateChanged(const EMatchState NewMatchState)
+{
+	SetShowGameOverScreen(NewMatchState == EMatchState::GameOver);
+}
+
+
 void APongPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
 	InputComponent->BindAxis("P1MoveUp", this, &APongPlayerController::P1MoveUp);
 	InputComponent->BindAxis("P2MoveUp", this, &APongPlayerController::P2MoveUp);
+
+	InputComponent->BindAction("Start", IE_Pressed, this, &APongPlayerController::StartPressed);
 }
 
 void APongPlayerController::P1MoveUp(float Value)
@@ -49,5 +69,18 @@ void APongPlayerController::P2MoveUp(float Value)
 	if (IsValid(P2Paddle))
 	{
 		P2Paddle->SetMovementInput(Value);
+	}
+}
+
+void APongPlayerController::StartPressed()
+{
+	const UWorld* World = GetWorld();
+	if (IsValid(World))
+	{
+		APongGameMode* PongGM = World->GetAuthGameMode<APongGameMode>();
+		if (IsValid(PongGM))
+		{
+			PongGM->StartMatch();
+		}
 	}
 }

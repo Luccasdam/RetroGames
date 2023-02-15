@@ -26,6 +26,7 @@ void APongScore::BeginPlay()
 		if (IsValid(PongGS))
 		{
 			PongGS->OnPlayerScoreChanged.AddUObject(this, &APongScore::OnPlayerScored);
+			PongGS->OnMatchStateChanged.AddUObject(this, &APongScore::OnMatchStateChanged);
 		}
 	}
 
@@ -38,5 +39,10 @@ void APongScore::OnPlayerScored(const int32 ScoringPlayer, const int32 PlayerSco
 	{
 		ScoreText->SetText(FText::AsNumber(PlayerScore));
 	}
+}
+
+void APongScore::OnMatchStateChanged(EMatchState NewMatchState)
+{
+	ScoreText->SetVisibility(NewMatchState != EMatchState::GameOver);
 }
 
