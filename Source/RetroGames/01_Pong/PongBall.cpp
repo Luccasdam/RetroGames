@@ -3,6 +3,7 @@
 
 #include "PongBall.h"
 #include "PongPaddle.h"
+#include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -13,26 +14,41 @@ APongBall::APongBall()
 
 	BallMesh = CreateDefaultSubobject<UStaticMeshComponent>("BallMesh");
 	SetRootComponent(BallMesh);
+
+	DirectionArrow = CreateDefaultSubobject<UArrowComponent>("DirectionArrow");
+	DirectionArrow->SetupAttachment(RootComponent);
 }
 
 void APongBall::BeginPlay()
 {
 	Super::BeginPlay();
-
-	const UWorld* World = GetWorld();
-	if (IsValid(World))
+	
+	if (APongGameState* PongGS = GetPongGameState())
 	{
-		APongGameState* PongGS = World->GetGameState<APongGameState>();
-		if (IsValid(PongGS))
-		{
-			PongGS->OnMatchStateChanged.AddDynamic(this, &APongBall::OnMatchStateChanged);
-		}
+		PongGS->OnMatchStateChanged.AddDynamic(this, &APongBall::OnMatchStateChanged);
+	}
+	
+	if (FMath::RandBool()) // If Player 2 Start
+	{
+		XMovementSpeed = -XMovementSpeed;
+		DirectionArrow->SetRelativeRotation(LeftRotation);
 	}
 }
 
 void APongBall::OnMatchStateChanged(const EMatchState NewMatchState)
 {
 	SetActorTickEnabled(NewMatchState == EMatchState::Playing);
+	DirectionArrow->SetVisibility(NewMatchState == EMatchState::Waiting);
+
+	if (NewMatchState == EMatchState::Waiting)
+	{
+		if (const APongGameState* PongGS = GetPongGameState())
+		{
+			const int32 WinningPlayer = PongGS->GetWinningPlayer();
+			const FRotator ArrowRotation = WinningPlayer == 0 ? LeftRotation : RightRotation;
+			DirectionArrow->SetRelativeRotation(ArrowRotation);
+		}
+	}
 
 	if (NewMatchState == EMatchState::Playing)
 	{
@@ -77,5 +93,20 @@ void APongBall::ResetBall()
 	SetActorLocation(FVector::ZeroVector);
 	XMovementSpeed = -XMovementSpeed;
 	XSpeedMultiplier = Cast<APongBall>(APongBall::StaticClass()->GetDefaultObject(true))->GetXSpeedMultiplier();
+}
+
+APongGameState* APongBall::GetPongGameState() const
+{
+	const UWorld* World = GetWorld();
+	if (IsValid(World))
+	{
+		APongGameState* PongGS = World->GetGameState<APongGameState>();
+		if (IsValid(PongGS))
+		{
+			return PongGS;
+		}
+	}
+
+	return nullptr;
 }
 

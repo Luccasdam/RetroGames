@@ -7,6 +7,8 @@
 #include "GameFramework/Actor.h"
 #include "PongBall.generated.h"
 
+class UArrowComponent;
+
 UCLASS()
 class RETROGAMES_API APongBall : public AActor
 {
@@ -27,10 +29,14 @@ public:
 	void ResetBall();
 
 	float GetXSpeedMultiplier() const {return XSpeedMultiplier;}
+	APongGameState* GetPongGameState() const;
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	TObjectPtr<UStaticMeshComponent> BallMesh;
+
+	UPROPERTY(VisibleAnywhere, Category="Components")
+	TObjectPtr<UArrowComponent> DirectionArrow;
 
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
 	TObjectPtr<USoundBase> BallHitSFX;
@@ -47,4 +53,7 @@ protected:
 private:
 	float XSpeedMultiplier = 1.0f;
 	float YSpeedMultiplier = 0.0f;
+
+	FRotator LeftRotation = FRotator(0.0f, -90.0f, 0.0f);
+	FRotator RightRotation = FRotator(0.0f, 90.0f, 0.0f);
 };
