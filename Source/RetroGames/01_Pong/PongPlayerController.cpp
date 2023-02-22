@@ -20,10 +20,14 @@ void APongPlayerController::BeginPlay()
 			if (PongPaddle->GetPlayerIndex() == 0)
 			{
 				P1Paddle = PongPaddle;
+				P1Paddle->SetPlayerState(PlayerState);
+				P1Paddle->NotifyPlayerStateSet();
 			}
 			else if (PongPaddle->GetPlayerIndex() == 1)
 			{
 				P2Paddle = PongPaddle;
+				P2Paddle->SetPlayerState(PlayerState);
+				P2Paddle->NotifyPlayerStateSet();
 			}
 		}
 	}
