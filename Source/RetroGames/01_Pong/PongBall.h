@@ -54,7 +54,7 @@ protected:
 	float YMovementSpeed = 200.0f;
 
 	UPROPERTY(EditAnywhere, Category="Gameplay")
-	float XSpeedModifierPerHit = 0.75f;
+	float XSpeedModifierPerHit = 0.1f;
 
 private:
 	float XSpeedMultiplier = 1.0f;
