@@ -42,7 +42,7 @@ public:
 	void ResetPaddle();
 
 protected:
-	UPROPERTY(VisibleAnywhere, Category="Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UStaticMeshComponent> PaddleMesh;
 
 	UPROPERTY(EditAnywhere, Category="Gameplay")
