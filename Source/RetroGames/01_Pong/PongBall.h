@@ -30,6 +30,8 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void ResetBall();
 
+	UFUNCTION(BlueprintCallable)
+	float GetBallXSpeed() const {return XMovementSpeed * XSpeedMultiplier;}
 	float GetXSpeedMultiplier() const {return XSpeedMultiplier;}
 	APongGameState* GetPongGameState() const;
 
