@@ -5,9 +5,15 @@
 #include "PongGameState.h"
 
 
+void APongGameMode::InitGameState()
+{
+	Super::InitGameState();
+
+	PongGS = GetGameState<APongGameState>();
+}
+
 void APongGameMode::StartMatch()
 {
-	APongGameState* PongGS = GetGameState<APongGameState>();
 	if (IsValid(PongGS))
 	{
 		switch (PongGS->GetMatchState())
@@ -26,12 +32,23 @@ void APongGameMode::StartMatch()
 
 void APongGameMode::RegisterScore(const int32 PlayerIndex)
 {
-	APongGameState* PongGS = GetGameState<APongGameState>();
 	if (IsValid(PongGS))
 	{
 		const int32 NewPlayerScore = PongGS->AddPlayerScore(PlayerIndex);
+
+		FTimerHandle TimerHandle_NextMatchState;
+		FTimerDelegate TimerDelegate;
+		TimerDelegate.BindUObject(this, &ThisClass::SetNextMatchState, NewPlayerScore);
+		GetWorldTimerManager().SetTimer(TimerHandle_NextMatchState, TimerDelegate, BallRespawnDelay, false);	
+	}
+}
+
+void APongGameMode::SetNextMatchState(const int32 NewPlayerScore)
+{
+	if (IsValid(PongGS))
+	{
 		const EMatchState NextMatchState = NewPlayerScore == WinningScore ? EMatchState::GameOver : EMatchState::Waiting;
-		
+			
 		PongGS->SetMatchState(NextMatchState);
 	}
 }

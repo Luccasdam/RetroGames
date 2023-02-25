@@ -10,7 +10,7 @@
 
 APongGoal::APongGoal()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	GoalBox = CreateDefaultSubobject<UBoxComponent>("GoalBox");
 	SetRootComponent(GoalBox);

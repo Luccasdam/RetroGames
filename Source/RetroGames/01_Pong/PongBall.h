@@ -21,12 +21,13 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintNativeEvent)
 	void OnMatchStateChanged(const EMatchState NewMatchState);
 
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintNativeEvent)
 	void ResetBall();
 
 	float GetXSpeedMultiplier() const {return XSpeedMultiplier;}
@@ -35,7 +36,7 @@ public:
 	APongPaddle* GetInstigatorPaddle() const {return InstigatorPaddle.Get();}
 
 protected:
-	UPROPERTY(VisibleAnywhere, Category="Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UStaticMeshComponent> BallMesh;
 
 	UPROPERTY(VisibleAnywhere, Category="Components")

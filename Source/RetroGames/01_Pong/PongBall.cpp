@@ -35,7 +35,7 @@ void APongBall::BeginPlay()
 	}
 }
 
-void APongBall::OnMatchStateChanged(const EMatchState NewMatchState)
+void APongBall::OnMatchStateChanged_Implementation(const EMatchState NewMatchState)
 {
 	SetActorTickEnabled(NewMatchState == EMatchState::Playing);
 	DirectionArrow->SetVisibility(NewMatchState == EMatchState::Waiting);
@@ -44,6 +44,7 @@ void APongBall::OnMatchStateChanged(const EMatchState NewMatchState)
 	{
 		if (const APongGameState* PongGS = GetPongGameState())
 		{
+			BallMesh->SetVisibility(true);
 			const int32 WinningPlayer = PongGS->GetWinningPlayer();
 			const FRotator ArrowRotation = WinningPlayer == 0 ? LeftRotation : RightRotation;
 			DirectionArrow->SetRelativeRotation(ArrowRotation);
@@ -95,13 +96,16 @@ void APongBall::Tick(float DeltaTime)
 	}
 }
 
-void APongBall::ResetBall()
+void APongBall::ResetBall_Implementation()
 {
 	SetActorLocation(FVector::ZeroVector);
 	XMovementSpeed = -XMovementSpeed;
 	XSpeedMultiplier = Cast<APongBall>(APongBall::StaticClass()->GetDefaultObject(true))->GetXSpeedMultiplier();
 
 	InstigatorPaddle = nullptr;
+
+	SetActorTickEnabled(false);
+	BallMesh->SetVisibility(false);
 }
 
 APongGameState* APongBall::GetPongGameState() const
